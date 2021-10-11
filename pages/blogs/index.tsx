@@ -1,24 +1,34 @@
 import fs from 'fs';
 import path from 'path';
+import matter from 'gray-matter';
+
+import { POSTS_PER_PAGE } from '../../config';
 
 import { GetServerSideProps, NextPage } from 'next';
 import Layout from '../../components/Layout';
-import { POSTS_PER_PAGE } from '../../config';
+import Post from '../../components/Post';
 
 interface Props {
-  posts: string[]
+  posts: {
+    slug: string,
+    frontMatter: {
+      [key: string]: any;
+    };
+  }[];
 }
 
 const BlogPage: NextPage<Props> = ({posts}) => {
+  
+  
   return (
     <Layout title="Blogs">
       <div className="flex justify-between flex-col md:flex-row">
         <div className="w-3/4 mr-10">
-          {/* <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
-            {posts.map((post, index) => (
-              <Post key={index} post={post} />
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
+            {posts.map((post) => (
+              <Post key={post.slug} post={post} />
             ))}
-          </div> */}
+          </div>
 
           {/* <Pagination currentPage={currentPage} numPages={numOfPages} /> */}
         </div>
@@ -31,9 +41,7 @@ const BlogPage: NextPage<Props> = ({posts}) => {
   );
 };
 
-export const getServerSideProps: GetServerSideProps<Props> = async ({
-  query,
-}) => {
+export const getServerSideProps: GetServerSideProps = async ({ query }) => {
   let page = query.page;
 
   if (!page) {
@@ -43,12 +51,22 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({
 
   const files = fs.readdirSync(path.join('posts'));
 
-  const numOfPages = Math.ceil(files.length / POSTS_PER_PAGE);
+  // const numOfPages = Math.ceil(files.length / POSTS_PER_PAGE);
 
   const seed = (+page - 1) * POSTS_PER_PAGE;
-  const postsInThisPage = files.slice(seed, seed + 3);
+  const postsInThisPageFileNames = files.slice(seed, seed + 3);
+  const postsInThisPage = postsInThisPageFileNames.map((filename) => {
+    const slug = filename.replace('.md', '');
 
-  console.log(files.slice());
+    const MDWithMeta = fs.readFileSync(path.join('posts', filename), 'utf-8');
+    const { content, data: frontMatter } = matter(MDWithMeta);
+
+    return {
+      slug,
+      frontMatter,
+      // content
+    };
+  });
 
   return {
     props: {
