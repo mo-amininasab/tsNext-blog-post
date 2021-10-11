@@ -20,7 +20,7 @@ const Layout: React.FC<Props> = ({title, description, keywords, children}) => {
         <meta name="description" content={description} />
       </Head>
       <Header />
-      <main>{children}</main>
+      <main className="container mx-auto my-6">{children}</main>
     </div>
   )
 }
