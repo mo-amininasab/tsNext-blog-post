@@ -10,33 +10,31 @@ import Post from '../../components/Post';
 
 interface Props {
   posts: {
-    slug: string,
+    slug: string;
     frontMatter: {
       [key: string]: any;
     };
   }[];
 }
 
-const BlogPage: NextPage<Props> = ({posts}) => {
-  
-  
+const BlogPage: NextPage<Props> = ({ posts }) => {
   return (
     <Layout title="Blogs">
-      <div className="flex justify-between flex-col md:flex-row">
-        <div className="w-3/4 mr-10">
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
-            {posts.map((post) => (
-              <Post key={post.slug} post={post} />
-            ))}
-          </div>
-
-          {/* <Pagination currentPage={currentPage} numPages={numOfPages} /> */}
+      {/* <div className="flex justify-between flex-col md:flex-row"> */}
+      <div className="">
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
+          {posts.map((post) => (
+            <Post key={post.slug} post={post} />
+          ))}
         </div>
 
-        {/* <div className="w-1/4">
+        {/* <Pagination currentPage={currentPage} numPages={numOfPages} /> */}
+      </div>
+
+      {/* <div className="w-1/4">
           <CategoryList categories={setOfCategories} />
         </div> */}
-      </div>
+      {/* </div> */}
     </Layout>
   );
 };
@@ -54,7 +52,7 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
   // const numOfPages = Math.ceil(files.length / POSTS_PER_PAGE);
 
   const seed = (+page - 1) * POSTS_PER_PAGE;
-  const postsInThisPageFileNames = files.slice(seed, seed + 3);
+  const postsInThisPageFileNames = files.slice(seed, seed + POSTS_PER_PAGE);
   const postsInThisPage = postsInThisPageFileNames.map((filename) => {
     const slug = filename.replace('.md', '');
 
