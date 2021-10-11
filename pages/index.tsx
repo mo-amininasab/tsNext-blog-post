@@ -10,7 +10,7 @@ const HomePage: NextPage<Props> = () => {
 
   return (
     <Layout>
-      <h1 className="text-blue-500 font-ssp">hhllle</h1>
+      <h1 className="text-gray-800 text-6xl font-semibold mx-auto w-min whitespace-nowrap">Welcome to DevSpace</h1>
     </Layout>
   )
 }

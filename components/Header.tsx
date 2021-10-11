@@ -25,7 +25,7 @@ const Header: React.FC<Props> = () => {
         </Link>
 
         <nav className="flex-wrap hidden md:flex md:w-4/5 items-center justify-end md:ml-auto">
-          <Link href="/blog">
+          <Link href="/blogs">
             <a className="mx-5 cursor-pointer uppercase hover:text-indigo-300">
               blog
             </a>
@@ -46,7 +46,7 @@ const Header: React.FC<Props> = () => {
       {/* menu */}
       {toggleMenu && (
         <div className="container md:hidden pt-0 mx-auto flex flex-col space-y-2 p-5 justify-start">
-          <Link href="/blog">
+          <Link href="/blogs">
             <a className="uppercase">blog</a>
           </Link>
 
